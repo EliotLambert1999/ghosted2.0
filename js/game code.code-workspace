@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../MS1FinalProj"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "code",
+		"liveServer.settings.port": 5502
+	}
+}
