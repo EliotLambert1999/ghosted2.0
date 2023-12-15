@@ -16,8 +16,8 @@ let restartButton;
 let initialText;
 let userInput;
 let playerImage;
-let balls = [];
-let numballs = 5;
+let spaceBarPressed = false;
+
 let img1; //entrance hall
 let img2; //phone background 1
 let img3; //you've been ghosted
@@ -53,7 +53,7 @@ let textarray2 = [
 
 let sprite;
 let inputCreated = false;
-let textBubbleRedArray = [];
+// let textBubbleRedArray = [];
 
 //PRELOADING IMAGES AND FONTS/////////////////////////
 
@@ -63,38 +63,39 @@ function preload() {
   img3 = loadImage("assets/images/ghostedphone.png");
   img4 = loadImage("assets/images/ghost.gif");
   img5=loadImage("assets/images/qmark.png");
-  playerImage = loadImage("assets/images/femav.png");
+  playerImage = loadImage("assets/images/avatar4.png");
   font = loadFont('assets/fonts/font3.ttf')
-  song1=loadSound("hingeaudiotrack.mp3")
-  song2=loadSound("typing.mp3")
-  song3=loadSound("aigenvoice.mp3")
-  song4=loadSound("scene4audio.mp3")
-
-  
+  song1=loadSound("sound/hingeaudiotrack.mp3")
+  song2=loadSound("sound/typing.mp3")
+  song3=loadSound("sound/aigenvoice.mp3")
+  song4=loadSound("sound/scene4audio.mp3")
 }
-
 
 function setup() {
   createCanvas(600,600);
 
-  for (let i = 0; i < textarray2.length; i++) {
-    textBubbleRedArray[i] = new TextBubbleRed(random(width), random(height), textarray2[i], i, textarray2);
-  }
+  // for (let i = 0; i < textarray2.length; i++) {
+  //   textBubbleRedArray[i] = new TextBubbleRed(random(width), random(height), textarray2[i], i, textarray2);
+  // }
 
 
-  for (let i = 0; i < 5; i++) {
+  //greeen rectangeles
+  for (let i = 0; i < textarray1.length; i++) {
     rects[i] = new TextBubble(random(width), random(height), textarray1[i]);
   }
+  console.log("this is rect", rects);
 
-  for (let i = 0; i < 5; i++) {
-    rects2[i] = new TextBubbleRed(random(width), random(height), textarray2[i],i);
+  //red rectangles
+  for (let i = 0; i < textarray2.length; i++) {
+    rects2[i] = new TextBubbleRed(random(width), random(height), textarray2[i]);
   }
   //   }
 
-  sprite = new PlayerSprite(300, 530, 40);
+  console.log("rect2", rects2);
+  sprite = new PlayerSprite(250, 480, 60);
 
   
-  song1.play();
+  
 
     //RESTART GAME
 
@@ -120,21 +121,28 @@ function restartGame() {
 
 }
 
+function keyPressed() {
+  if (keyCode === 32) { // 32 is the key code for spacebar
+    spaceBarPressed = true;
+  }
+}
+
 //SCENES/////////////////
 
 function draw() {
+  restartButton.hide();
   switch (mode) {
     case 0:
       scene0();
-      restartButton.hide();
+      
       break;
     case 1:
       scene1();
-      restartButton.hide();
+      
       break;
     case 2:
       scene2();
-      restartButton.hide();
+      
       break;
     case 3:
       scene3();
@@ -149,12 +157,18 @@ function draw() {
 function scene0() { //entrance hall
   background(255, 0, 0);
 
-  if (inputCreated) {
-    inputBox.hide();
-    submitButton.hide();
-    inputCreated = false;
-
+  if (spaceBarPressed) {
+    song1.play();
+    spaceBarPressed = false; // Reset the flag after playing the song
   }
+
+
+  // if (inputCreated) {
+  //   inputBox.hide();
+  //   submitButton.hide();
+  //   inputCreated = false;
+
+  // }
 
   image(img1, 0, 0, height, height)
 
@@ -175,24 +189,22 @@ function scene0() { //entrance hall
   textSize(15)
   textStyle(BOLD)
   fill(255)
-  textFont(font);
+  // textFont(font);
   text("enter if u dare", 260, 320)
   pop();
 
-  textSize(12)
+  textSize(10)
   textStyle(BOLD)
   fill(0)
-  text("press the arrow keys to move around", 40, 580)
-
+  text("press the arrow keys to move around", 390, 580)
+  text("press the spacebar for sound", 40, 580)
 
   sprite.move();
   sprite.display();
 
-  
-
-
   if (sprite.y < height / 2) {
     mode = 1;
+  
    
   }
  
@@ -202,11 +214,7 @@ function scene0() { //entrance hall
 
 function scene1() { //input text scene
   background(0);
-
-  for (let i = 0; i < textarray2.length; i++) {
-    rects2[i] = new TextBubbleRed(random(width), random(height), textarray2[i], i, textarray2);
-  }
-
+  
   song1.stop();
 
   if (!song3Played) {
@@ -218,98 +226,96 @@ function scene1() { //input text scene
 
   if (!inputCreated) {
     inputBox = createInput();
-    inputBox.position(280, 350);
-    inputBox.size(200,100,10);
-    inputBox.style('background-color', '#ff0000');
-    inputBox.style('color', 'white');
+    inputBox.position(100, 380);
+    inputBox.size(300,50);
+    inputBox.style('background-color', 255);
+    inputBox.style('color', 'black');
     inputBox.style('border', 'none');
     inputBox.style('padding', '8px');
-    inputBox.style('font-family', 'font');
+    inputBox.style('font-style', 'bold');
+    inputBox.style('border-radius', '25px');
     inputBox.style('font-size', '16px');
  
     
-    submitButton = createButton('Send');
-    submitButton.position(500, 350);
+    submitButton = createImg('assets/images/arrow.png', 'Submit');
+    submitButton.position(370, 395);
+    submitButton.size(40, 40);
    submitButton.style('background-color',"#215E7C"); // 
     submitButton.style('color', 'white'); 
     submitButton.style('font-family','font'); 
+    submitButton.style('border-radius', '25px');
     submitButton.style('cursor', 'pointer'); 
-    submitButton.mousePressed(submitText); 
+    submitButton.mousePressed(submitText); //txt box submit text
     inputCreated = true;
   }
 
 push();
 fill(255);
 textSize(15);
-textFont(font);
+//use a google font
+// textFont(font);
 textAlign(LEFT)
-let paragraph="It's Sunday afternoon you had a date on Thursday night with someone you met online. Compared to the last three trainwrecks of dates - the menenist, the pyramid scheming hippy, and the sadboy, you thought this person seemed kind of - normal?! After parting ways after a night of flirting , you decide to reach out, because what are your twenties for if not hedonism, love, and commitment issues? "
+let paragraph="It's Sunday afternoon. You had a date on Thursday night with someone you met online. Compared to the last three trainwrecks of dates - the menenist, the pyramid scheming hippy, and the sadboy, you thought this person seemed kind of - normal?! After parting ways after a night of flirting , you decide to reach out, because what are your twenties for if not hedonism, love, and commitment issues? "
 text(paragraph, 100,50,300,400)
 fill("#ff0000")
 textSize(16);
-text("send a text to see if u will get ghosted and avoid the red text bubbles",30,300)
+text("send a text to see if u will get ghosted",100,300)
+text("avoid the red text bubbles in the next scene!",100,320)
 pop();
+
+  
+}
 
 function submitText() {
   let inputValue = inputBox.value();
 
-  if (inputValue.trim() !== "") {
+  // if (inputValue.trim() !== "") {
     textarray2.push(inputValue); 
-  
-
-    let newTextBubbleRed = new TextBubbleRed(random(width), random(height), inputValue, textBubbleRedArray.length - 1, textarray2);
-    textBubbleRedArray.push(newTextBubbleRed); // Create a new TextBubbleRed object and add it to textBubbleRedArray
-    inputBox.value('');
-  }
-
+    let temp = new TextBubbleRed(random(width), random(height), textarray2[6]);
+    rects2.push(temp);
+    // console.log("making it bigger", rects2.length);
+    // console.log("submit text function", textarray2); // this working
+    // console.log("added", rects2);
   mode = 2;
-}
-
-
-
-  
 }
 
 //Scene 2////////
 
 function scene2() { //falling text scene
   background(0, 0, 0, 20);
-
+  // console.log(textarray2);
   if (!song1.isPlaying()) {
     song1.play();
   }
 
-  song2.stop();
+  song3.stop();
 
   inputBox.hide();
   submitButton.hide();
 
   for (let i = 0; i < rects.length; i++) {
 
-    rects[i].display("#53d769");
+    rects[i].display("#53d769");//green
     rects[i].fall();
+  }
+  for (let i = 0; i < rects2.length; i++) {
 
-    rects2[i].display("#ff0000");
-    rects2[i].updateText(textarray2);
+    rects2[i].display("#ff0000");//red
+    rects2[i].updateText();
     rects2[i].fall();
   
-
+        //making start over
       if (sprite.x > rects2[i].x - 40 && sprite.x < rects2[i].x + 100 && sprite.y > rects2[i].y && sprite.y < rects2[i].y + 70) {
         mode = 3;
         break;
       }
-    
   }
+
+    
+  // }
 
   sprite.move();
   sprite.display();
-
-  if (sprite.x > 330 && sprite.y > 350) {
-    mode = 3;
-  }
-
- 
-
 
 }
 
@@ -348,4 +354,3 @@ function scene3() { //you've been ghosted
 }
 
 }
-

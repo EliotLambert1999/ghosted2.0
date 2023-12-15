@@ -26,7 +26,7 @@ class PlayerSprite {
     display() {
       
       push();
-      image(playerImage, this.x, this.y, 100,100);
+      image(playerImage, this.x, this.y, 120,120);
       pop();
     }
   }

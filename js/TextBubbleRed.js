@@ -1,18 +1,16 @@
 class TextBubbleRed {
-  constructor(x, y, text, index, textarray2) {
+  constructor(x, y, text, textarray2) {
     this.x = x;
     this.y = y;
     this.text = text;
-    this.index = index;
+    // this.index = index;
     this.textarray2 = textarray2;
-      this.index=index;
       this.speed = 1;
     }
 
     updateText() {
-      this.textarray2[this.index] = this.text;
-      
-
+      this.textarray2 = this.text;
+      // console.log("class", this.textarray2);
     }
 
 fall(){
